@@ -1,14 +1,18 @@
-import express from "express"
-import { getData, getUnApproval, approveAbsenceRequest } from "../controllers/data.js"
+import express from "express";
+import {
+  getData,
+  getUnApproval,
+  approveAbsenceRequest,
+} from "../controllers/data.js";
 
-const router = express.Router()
+const router = express.Router();
 
-router.get("/", getData)
-router.get("/unapproval", getUnApproval)
-router.post("/approve", approveAbsenceRequest)
+router.post("/", getData);
+router.get("/unapproval", getUnApproval);
+router.post("/approve", approveAbsenceRequest);
 // router.post("/", createData)
 // router.put("/:id", updateData)
 // router.get("/search/:key", searchData)
 // router.post("/search", chartVisualizeData)
 
-export default router
+export default router;
