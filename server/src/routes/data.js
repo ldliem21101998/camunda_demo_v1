@@ -1,10 +1,11 @@
 import express from "express"
-import { getData } from "../controllers/data.js"
-// import { getData } from "../controllers/data.ts"
+import { getData, getUnApproval, approveAbsenceRequest } from "../controllers/data.js"
 
 const router = express.Router()
 
 router.get("/", getData)
+router.get("/unapproval", getUnApproval)
+router.post("/approve", approveAbsenceRequest)
 // router.post("/", createData)
 // router.put("/:id", updateData)
 // router.get("/search/:key", searchData)

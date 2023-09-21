@@ -48,8 +48,34 @@ export const getData = async (req, res) => {
             }
         }, 5000);
 
-        res.status(200)
+        res.status(200).json({ message: "Request sent" })
     } catch (error) {
-        res.status(404)
+        res.status(404).json({ message: error.message })
+    }
+}
+
+export const getUnApproval = async (req, res) => {
+    try {
+        const unCompleteTask = await tasklist.getTasks({
+            state: Tasklist.TaskState.CREATED,
+        })
+        console.log(unCompleteTask);
+
+        res.status(200).json({ message: "Success", data: unCompleteTask })
+    } catch (error) {
+        res.status(404).json({ message: error.message })
+    }
+}
+
+export const approveAbsenceRequest = async (req, res) => {
+    try {
+        const { claimTask: t } = await tasklist.claimTask(req.body.id, 'demobot', true)
+        await tasklist.completeTask(t.id, {
+            approvalResult: req.body.approvalStatus
+        })
+
+        res.status(200).json({ message: "Success" })
+    } catch (error) {
+        res.status(404).json({ message: error.message })
     }
 }
