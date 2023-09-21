@@ -1,6 +1,6 @@
 import express from "express"
-// import { getData, createData, updateData, searchData, chartVisualizeData } from "../controllers/data.js"
-import { getData } from "../controllers/data.ts"
+import { getData } from "../controllers/data.js"
+// import { getData } from "../controllers/data.ts"
 
 const router = express.Router()
 

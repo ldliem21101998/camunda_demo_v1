@@ -1,78 +1,55 @@
-import mongoose from "mongoose"
-import DataModel from "../models/dataModel.js"
+import { C8, Tasklist } from 'camunda-8-sdk'
+import { config } from 'dotenv'
+config()
+
+const zbc = new C8.ZBClient()
+const operate = new C8.OperateApiClient()
+const tasklist = new C8.TasklistApiClient()
 
 export const getData = async (req, res) => {
     try {
-        const data = await DataModel.find()
+        // const res = await zbc.deployProcess("./resources/twilio_v1.bpmn")
+        // const processInstance = (await zbc.createProcessInstance("absence-request-process-1dfcdhr", {
+        const processInstance = (await zbc.createProcessInstance("Process_AbsenceRequest", {
+            // "employeeID": "LiemLD",
+            // "leaveStartTime": "dev",
+            // "leaveEndTime": "dev_1",
+            // "reason": "HEHE"
+            "empID": "LiemLD",
+            "leaveStartTime": "123456"
+        }))
+        // const processInstanceKey = processInstance.processInstanceKey
+        // const processDefinitionKey = processInstance.processDefinitionKey
 
-        res.status(200).json(data)
-    } catch (error) {
-        res.status(404).json({ message: error.message })
-    }
-}
+        // const variablesForProcess = await operate.getVariablesforProcess(processInstanceKey)
+        // console.log(variablesForProcess);
 
-export const createData = async (req, res) => {
-    const body = req.body
-    const newData = new DataModel(body)
+        setTimeout(async () => {
+            const unCompleteTask = await tasklist.getTasks({
+                state: Tasklist.TaskState.CREATED,
+            })
+            console.log(unCompleteTask);
+            if (unCompleteTask.tasks.length > 0) {
+                unCompleteTask.tasks.forEach(async task => {
+                    // console.log(task);
 
-    try {
-        await newData.save()
+                    // console.log(task.variables);
+                    // console.log(processInstanceKey);
+                    // console.log(task.processInstanceId == processInstanceKey);
 
-        res.status(201).json(newData)
-    } catch (error) {
-        res.status(400).json({ message: error.message })
-    }
-}
-
-export const updateData = async (req, res) => {
-    const { id: _id } = req.params
-    const body = req.body
-
-    if (!mongoose.Types.ObjectId.isValid(_id)) {
-        return res.status(404).send("Invalid id")
-    }
-
-    const updateData = await DataModel.findByIdAndUpdate(_id, body, { new: true })
-    res.json(updateData)
-}
-
-export const searchData = async (req, res) => {
-    const result = await DataModel.find({
-        "$or": [
-            {
-                Region: { $regex: req.params.key },
-            },
-            {
-                Rep: { $regex: req.params.key }
+                    // if (task.processInstanceId == processInstanceKey) {
+                    const { claimTask: t } = await tasklist.claimTask(task.id, 'demobot', true)
+                    await tasklist.completeTask(t.id, {
+                        // humanTaskStatus: 'Got done',
+                        // assignedLineManager: "Liem"
+                    })
+                    // }
+                })
             }
-        ],
+        }, 5000);
 
-    })
-    res.send(result)
-}
-
-export const chartVisualizeData = async (req, res) => {
-    const body = req.body
-
-    try {
-        // const result = await DataModel.aggregate([
-        //     {
-        //         "$group": {
-        //             _id: `$${body.x}`,
-        //             // _id: body.x.map(element, index) => 
-        //             // count: { $sum: 1 },
-        //             // sum: { $sum: `$${body.y}` },
-
-        //         }
-        //     }
-        // ])
-        const result = await DataModel.find({
-            Region: "Central",
-            Rep: "Jardine"
-        })
-
-        res.status(200).json(result)
+        res.status(200)
     } catch (error) {
-        res.status(400).json({ message: error.message })
+        res.status(404)
     }
 }
