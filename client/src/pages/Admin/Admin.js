@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getUnApprovalRequest } from "../../services/absenceRequest";
+import { getUnApprovalRequest, handleApprovalRequest } from "../../services/absenceRequest";
 import { Space, Table, Tag } from "antd";
 
 const Admin = () => {
@@ -28,8 +28,8 @@ const Admin = () => {
         console.log(record);
         return (
           <Space size="middle">
-            <a>Invite {record.name}</a>
-            <a>Delete</a>
+            <a onClick={() => handleApprovalRequest({id: record.id, approvalStatus: "approved"})}>Approve</a>
+            <a onClick={() => handleApprovalRequest({id: record.id, approvalStatus: "rejected"})}>Reject</a>
           </Space>
         );
       },
@@ -43,14 +43,18 @@ const Admin = () => {
     });
   }, []);
 
+  const handleApproveRequest = (approvalStatus) => {
+    handleApprovalRequest(approvalStatus)
+  }
+
   return (
     <div
-      style={{
-        width: "150vh",
-        height: "50vh",
-        margin: "auto",
-        paddingTop: "30vh",
-      }}
+    // style={{
+    //   width: "150vh",
+    //   height: "50vh",
+    //   margin: "auto",
+    //   paddingTop: "30vh",
+    // }}
     >
       <Table
         style={{ border: "1px solid #ccc" }}

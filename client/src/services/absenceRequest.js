@@ -7,3 +7,17 @@ export const getUnApprovalRequest = (payload) => {
     data: payload,
   });
 };
+
+
+  
+
+
+
+
+
+export const handleApprovalRequest = (payload) => {
+  return request(api.url.baseUrl + api.url.data + "/approve", {
+    method: "post",
+    data: payload,
+  });
+};
