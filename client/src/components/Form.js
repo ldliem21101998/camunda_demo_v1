@@ -1,5 +1,6 @@
 import React from "react";
 import { Form, DatePicker, Input, Button, Typography } from "antd";
+import { postAbsenceRequest } from "../services/absenceRequest";
 
 const { RangePicker } = DatePicker;
 
@@ -15,26 +16,28 @@ const rangeConfig = {
 
 const onFinish = (fieldsValue) => {
   // Should format date value before submit.
-  const rangeValue = fieldsValue["range-picker"];
+  const rangeValue = fieldsValue["date"];
+  const reason = fieldsValue["reason"];
   const values = {
-    ...fieldsValue,
-    "range-picker": [
-      rangeValue[0].format("YYYY-MM-DD"),
-      rangeValue[1].format("YYYY-MM-DD"),
-    ],
+    "start-date": rangeValue[0].format("YYYY-MM-DD"),
+    "end-date": rangeValue[1].format("YYYY-MM-DD"),
+    reason: reason,
   };
   console.log("Received values of form: ", values);
+  postAbsenceRequest().then((values) => {
+    console.log(values);
+  });
 };
 
 const FormField = () => {
   return (
     <Form name="form_item_path" layout="vertical" onFinish={onFinish}>
-      <Form.Item name="id" label="Employee name:">
+      <Form.Item label="Employee name:">
         <Typography>
           <pre>Pham Gia Hien</pre>
         </Typography>
       </Form.Item>
-      <Form.Item name="range-picker" label="RangePicker:" {...rangeConfig}>
+      <Form.Item name="date" label="RangePicker:" {...rangeConfig}>
         <RangePicker />
       </Form.Item>
       <Form.Item name="reason" label="Reason:">

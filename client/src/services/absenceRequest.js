@@ -1,5 +1,5 @@
 import request from "./request";
-import api from "./api"
+import api from "./api";
 
 export const getUnApprovalRequest = (payload) => {
   return request(api.url.baseUrl + api.url.data + "/unapproval", {
@@ -8,12 +8,12 @@ export const getUnApprovalRequest = (payload) => {
   });
 };
 
-
-  
-
-
-
-
+export const postAbsenceRequest = (payload) => {
+  return request(api.url.baseUrl + api.url.data + "/", {
+    method: "post",
+    data: payload,
+  });
+};
 
 export const handleApprovalRequest = (payload) => {
   return request(api.url.baseUrl + api.url.data + "/approve", {
