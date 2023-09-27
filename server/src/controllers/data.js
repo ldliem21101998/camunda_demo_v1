@@ -54,7 +54,7 @@ export const getData = async (req, res) => {
           // }
         });
       }
-    }, 5000);
+    }, 7000);
 
     res.status(200).json({ message: "Request sent" });
   } catch (error) {
