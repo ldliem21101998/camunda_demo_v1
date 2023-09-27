@@ -16,6 +16,11 @@ const Admin = () => {
     //   key: "id",
     // },
     {
+      title: "Employee",
+      dataIndex: "employeeName",
+      key: "employeeName",
+    },
+    {
       title: "Leave Start Time",
       dataIndex: "startTime",
       key: "startTime",
@@ -97,7 +102,8 @@ const Admin = () => {
               id: item.id,
               startTime: item.variables.startTime,
               endTime: item.variables.endTime,
-              reason: item.variables.reason
+              reason: item.variables.reason,
+              employeeName: item.variables.employeeName
             };
           })}
         />

@@ -1,78 +1,89 @@
-import React from "react";
-import { Button, Checkbox, Form, Input } from "antd";
+import React, { useState } from "react";
+import { Button, Form, Input, Checkbox, Row, Col } from "antd";
+import { loginRequest } from "../services/authorization"
+import { useNavigate } from "react-router";
+import LoginImg from "../assests/images/HRM.jpg";
+import "./styles.css";
 
-const onFinish = (values) => {
-  if (values.username === "user" && values.password === "user") {
-    window.location.href = "/user";
+const LoginForm = () => {
+  const { TextArea } = Input;
+  const navigate = useNavigate()
+
+  const [credentials, setCredentials] = useState({
+    Password: "",
+    Username: ""
+  })
+
+  const handleLogin = async () => {
+    await loginRequest(credentials).then((res) => {
+      // console.log(res);
+      sessionStorage.setItem("user", JSON.stringify(res.data))
+    })
+
+    const userInfo = JSON.parse(sessionStorage.getItem("user"))
+
+    if (userInfo.Role == "Admin") {
+      navigate("/admin")
+    } else {
+      navigate("/user")
+    }
   }
-  if (values.username === "admin" && values.password === "admin") {
-    window.location.href = "/admin";
-  }
-};
-const onFinishFailed = (errorInfo) => {
-  console.log("Failed:", errorInfo);
-};
 
-const LoginForm = () => (
-  <Form
-    name="basic"
-    style={{
-      maxWidth: 600,
-    }}
-    initialValues={{
-      remember: true,
-    }}
-    onFinish={onFinish}
-    onFinishFailed={onFinishFailed}
-    autoComplete="off"
-  >
-    <Form.Item
-      label="Username"
-      name="username"
-      rules={[
-        {
-          required: true,
-          message: "Please input your username!",
-        },
-      ]}
-    >
-      <Input />
-    </Form.Item>
+  return (
+    <div className="login-page">
+      <div className="login-box">
+        <div className="illustration-wrapper">
+          <img src={LoginImg} alt="Login" />
+        </div>
+        <Form
+          name="login-form"
+          initialValues={{ remember: true }}
+        >
+          <p className="form-title">Welcome back</p>
+          <p className="form-description">Login to the Dashboard</p>
+          <Form.Item
+            name="Username"
+            rules={[{ required: true, message: 'Please input your username!' }]}
+          >
+            <Input
+              placeholder="Username"
+              onChange={(e) => setCredentials({ ...credentials, Username: e.target.value })}
+            />
+          </Form.Item>
 
-    <Form.Item
-      label="Password"
-      name="password"
-      rules={[
-        {
-          required: true,
-          message: "Please input your password!",
-        },
-      ]}
-    >
-      <Input.Password />
-    </Form.Item>
+          <Form.Item
+            name="password"
+            rules={[{ required: true, message: 'Please input your password!' }]}
+          >
+            <Input.Password
+              placeholder="Password"
+              onChange={(e) => setCredentials({ ...credentials, Password: e.target.value })}
+            />
+          </Form.Item>
 
-    <Form.Item
-      name="remember"
-      valuePropName="checked"
-      wrapperCol={{
-        offset: 8,
-        span: 16,
-      }}
-    >
-      <Checkbox>Remember me</Checkbox>
-    </Form.Item>
+          <Row>
+            <Col span={12}>
+              <Form.Item name="remember" valuePropName="checked">
+                <Checkbox>Remember me</Checkbox>
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item name="signup" valuePropName="checked" className="form-item-signup">
+                <Button type="link">
+                  Sign up
+                </Button>
+              </Form.Item>
+            </Col>
+          </Row>
 
-    <Form.Item
-      wrapperCol={{
-        offset: 8,
-        span: 16,
-      }}
-    >
-      <Button type="primary" htmlType="submit">
-        Submit
-      </Button>
-    </Form.Item>
-  </Form>
-);
+          <Form.Item>
+            <Button type="primary" htmlType="submit" className="login-form-button" onClick={() => handleLogin()}>
+              LOGIN
+            </Button>
+          </Form.Item>
+        </Form>
+      </div>
+    </div>
+  )
+}
 export default LoginForm;
