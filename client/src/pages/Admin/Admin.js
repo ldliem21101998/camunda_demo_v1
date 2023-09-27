@@ -28,23 +28,28 @@ const Admin = () => {
         console.log(record);
         return (
           <Space size="middle">
-            <a onClick={() => handleApprovalRequest({id: record.id, approvalStatus: "approved"})}>Approve</a>
-            <a onClick={() => handleApprovalRequest({id: record.id, approvalStatus: "rejected"})}>Reject</a>
+            <a onClick={() => approveRequest({id: record.id, approvalStatus: "approved"})}>Approve</a>
+            <a onClick={() => approveRequest({id: record.id, approvalStatus: "rejected"})}>Reject</a>
           </Space>
         );
       },
     },
   ];
 
-  useEffect(() => {
+  const handleGetUnapprovalRequest = () => {
     getUnApprovalRequest().then((response) => {
       console.log(response.data.data.tasks);
       setDataSource(response.data.data.tasks);
     });
+  }
+
+  useEffect(() => {
+    handleGetUnapprovalRequest()
   }, []);
 
-  const handleApproveRequest = (approvalStatus) => {
+  const approveRequest = (approvalStatus) => {
     handleApprovalRequest(approvalStatus)
+    handleGetUnapprovalRequest()
   }
 
   return (
