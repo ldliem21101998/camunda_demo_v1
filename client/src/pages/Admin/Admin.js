@@ -6,20 +6,25 @@ const Admin = () => {
   const [dataSource, setDataSource] = useState([]);
 
   const columns = [
+    // {
+    //   title: "id",
+    //   dataIndex: "id",
+    //   key: "id",
+    // },
     {
-      title: "id",
-      dataIndex: "id",
-      key: "id",
+      title: "Leave Start Time",
+      dataIndex: "startTime",
+      key: "startTime",
     },
     {
-      title: "processDefinitionId",
-      dataIndex: "processDefinitionId",
-      key: "processDefinitionId",
+      title: "Leave End Time",
+      dataIndex: "endTime",
+      key: "endTime",
     },
     {
-      title: "processInstanceId",
-      dataIndex: "processInstanceId",
-      key: "processInstanceId",
+      title: "Reason",
+      dataIndex: "reason",
+      key: "reason",
     },
     {
       title: "Action",
@@ -67,9 +72,10 @@ const Admin = () => {
         dataSource={dataSource.map((item, index) => {
           return {
             key: index.toString(),
-            processDefinitionId: item.processDefinitionId,
-            processInstanceId: item.processInstanceId,
             id: item.id,
+            startTime: item.variables.startTime,
+            endTime: item.variables.endTime,
+            reason: item.variables.reason
           };
         })}
       />

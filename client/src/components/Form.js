@@ -23,13 +23,13 @@ const FormField = () => {
     const rangeValue = fieldsValue["date"];
     const reason = fieldsValue["reason"];
     const values = {
-      "start-date": rangeValue[0].format("YYYY-MM-DD"),
-      "end-date": rangeValue[1].format("YYYY-MM-DD"),
-      reason: reason,
+      "startTime": rangeValue[0].format("DD-MM-YYYY"),
+      "endTime": rangeValue[1].format("DD-MM-YYYY"),
+      "reason": reason,
     };
     console.log("Received values of form: ", values);
-    postAbsenceRequest().then((values) => {
-      console.log(values);
+    postAbsenceRequest(values).then((res) => {
+      console.log(res);
     });
     messageApi.open({
       type: "success",
