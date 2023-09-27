@@ -1,17 +1,24 @@
 import React from "react";
 import FormField from "../../components/Form";
+import SideBar from "../../components/SideBar";
 const User = () => {
   return (
     <div
       style={{
-        height: "10vh",
-        width: "50vh",
-        margin: "auto",
-        paddingTop: "30vh",
+        height: "100vh",
+        display: "flex",
       }}
     >
-      <h1 style={{ padding: "25px 0px" }}>Request Absence</h1>
-      <FormField />
+      <SideBar />
+      <div
+        style={{
+          width: "20%",
+          marginLeft: "10vh",
+        }}
+      >
+        <h1 style={{ padding: "25px 0px" }}>Request Absence</h1>
+        <FormField />
+      </div>
     </div>
   );
 };

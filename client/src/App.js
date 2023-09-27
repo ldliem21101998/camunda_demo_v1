@@ -1,16 +1,15 @@
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { LoginPage, AdminPage, UserPage } from "./pages";
+import SideBar from "./components/SideBar";
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<LoginPage />} />
-        <Route path="/user" element={<UserPage />} />
-        <Route path="/admin" element={<AdminPage />} />
-      </Routes>
-    </Router>
+    <Routes>
+      <Route path="/" element={<LoginPage />} />
+      <Route path="/user" element={<UserPage />} />
+      <Route path="/admin" element={<AdminPage />} />
+    </Routes>
   );
 }
 
