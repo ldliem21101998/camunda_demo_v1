@@ -13,6 +13,7 @@ export const getData = async (req, res) => {
     const processInstance = await zbc.createProcessInstance(
       "Process_AbsenceRequest",
       {
+        "employeeName": req.body.employeeName,
         "startTime": req.body.startTime,
         "endTime": req.body.endTime,
         "reason": req.body.reason,
